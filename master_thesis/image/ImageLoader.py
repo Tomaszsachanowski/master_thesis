@@ -11,6 +11,15 @@ class ImageLoader:
 
     @staticmethod
     def load(paths=PATHS_MRI_IMAGE):
+        """
+        Method load all mri images from nifti files.
+
+        Args:
+            paths (list): Paths to the nifti files. Defaults to PATHS_MRI_IMAGE.
+
+        Returns:
+            list: List of nupy narray unit8 two dimention. 
+        """        
         all_mri_images = []
         for path in paths:
             nifti1_image = nib.load(path)
@@ -24,6 +33,17 @@ class ImageLoader:
 
     @staticmethod
     def _convert(img_float64, type_min=0, type_max=255, target_type=np.uint8):
+        """Convert narray from np.float64 to the np.unit8
+
+        Args:
+            img_float64 (np.narray): MRI image represented as numpy array
+            type_min (int, optional): Min normalization value. Defaults to 0.
+            type_max (int, optional): Max normalization value. Defaults to 255.
+            target_type (np.uint8, optional): Dtype of narray. Defaults to np.uint8.
+
+        Returns:
+            np.narray: New narray with Dtype uint8
+        """        
         imin = img_float64.min()
         imax = img_float64.max()
 
