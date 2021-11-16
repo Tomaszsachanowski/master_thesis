@@ -1,6 +1,5 @@
 # import glob
 # import PySimpleGUI as sg
-# from PIL import Image, ImageTk
 
 # def parse_folder(path):
 #     images = glob.glob(f'{path}/*.jpg') + glob.glob(f'{path}/*.png')
@@ -58,60 +57,69 @@ import io
 import os
 from typing import Sized
 import PySimpleGUI as sg
-from PIL import Image
+from PIL import Image, ImageTk
+
 
 file_types = [("PNG (*.png)", "*.png"),
               ("JPEG (*.jpg)", "*.jpg"),
               ("All files (*.*)", "*.*")]
+
+
+def load_image(path, window_image):
+    if os.path.exists(path):
+        try:
+            image = Image.open(path)
+            image.thumbnail((400, 400))
+            bio = io.BytesIO()
+            image.save(bio, format="PNG")
+            window_image.update(data=bio.getvalue())
+        except:
+            print(f"Unable to open {path}!")
+
+
 def main():
+    sg.theme('DarkBrown')
     col1_layout = [
-        [sg.Text("First Image")],
+        [sg.Text("First Image", font=("Arial", 20))],
         [
             sg.Input(size=(30, 1), key="-FILE_1-"),
             sg.FileBrowse(file_types=file_types, key="-BROWSE_1-"),
             sg.Button("Load Image", key="-Button_1-")
         ],
-        [sg.Frame("", [[sg.Image(key="-IMAGE_1-")]])]
+        [sg.Frame("", [[sg.Image(key="-IMAGE_1-")]], size=(400, 400))]
     ]
     col1 = sg.Column(col1_layout, element_justification="center")
 
     col2_layout = [
-        [sg.Text("Second Image")],
+        [sg.Text("Second Image", font=("Arial", 20))],
         [
             sg.Input(size=(30, 1), key="-FILE_2-"),
             sg.FileBrowse(file_types=file_types, key="-BROWSE_2-"),
             sg.Button("Load Image",  key="-Button_2-")
         ],
-        [sg.Frame("", [[sg.Image(key="-IMAGE_2-")]])]
+        [sg.Frame("", [[sg.Image(key="-IMAGE_2-")]], size=(400, 400))]
     ]
-    col2 = sg.Column(col2_layout, element_justification="center")
+    col2 = sg.Column(col2_layout, element_justification="center", vertical_alignment='center')
 
     main_layout = [[col1, col2]]
 
 
-    window = sg.Window("Image Viewer", main_layout, size=(1000, 1000))
-    while True:
+    window = sg.Window("Image Viewer", main_layout, size=(1000, 800), element_justification="center")
+    while True: 
         event, values = window.read()
         print(event, values)
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
         if event == "-Button_1-":
-                filename = values["-FILE_1-"]
-                if os.path.exists(filename):
-                    image = Image.open(filename)
-                    image.thumbnail((200, 200))
-                    bio = io.BytesIO()
-                    image.save(bio, format="PNG")
-                    window["-IMAGE_1-"].update(data=bio.getvalue())
+            path = values["-FILE_1-"]
+            load_image(path, window["-IMAGE_1-"])
         if event == "-Button_2-":
-                filename = values["-FILE_2-"]
-                if os.path.exists(filename):
-                    image = Image.open(filename)
-                    image.thumbnail((200, 200))
-                    bio = io.BytesIO()
-                    image.save(bio, format="PNG")
-                    window["-IMAGE_2-"].update(data=bio.getvalue())
+            path = values["-FILE_2-"]
+            load_image(path, window["-IMAGE_2-"])
+
     window.close()
+
+
 if __name__ == "__main__":
     main()
 
