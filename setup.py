@@ -7,5 +7,5 @@ setuptools.setup(
     description="Applications of machine learning algorithms to remove noise and artifacts present in brain MRI records",
     author=['Tomasz Sachanowski'],
     packages=setuptools.find_packages(),
-    install_requires=['numpy','dataframe', 'nibabel']
+    install_requires=['numpy','dataframe', 'nibabel', 'pysimplegui']
 )
