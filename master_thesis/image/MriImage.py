@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 PATHS_MRI_IMAGE = Config.MRI_IMAGES["PATHS"]
 
 
-class ImageLoader:
+class MriImage:
 
     @staticmethod
     def load(paths=PATHS_MRI_IMAGE):
@@ -27,7 +27,7 @@ class ImageLoader:
             nifiti_data =  nifti1_image.get_fdata()
             for i in range(number_images):
                 image_float64 =  nifiti_data[:,:,i]
-                image_uint8 = ImageLoader._convert(image_float64)
+                image_uint8 = MriImage._convert(image_float64)
                 all_mri_images.append(image_uint8)
         return all_mri_images
 
