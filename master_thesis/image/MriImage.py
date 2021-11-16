@@ -1,10 +1,15 @@
-import nibabel as nib
 import numpy as np
-from config import Config
+
+import nibabel as nib
 import matplotlib.pyplot as plt
+
+from config import Config
 
 
 PATHS_MRI_IMAGE = Config.MRI_IMAGES["PATHS"]
+FORMAT = Config.MRI_IMAGES["FORMAT"]
+PREFIX = Config.MRI_IMAGES["PREFIX"]
+ORGINAL_DIR = Config.MRI_IMAGES["ORGINAL_DIR"]
 
 
 class MriImage:
@@ -51,3 +56,18 @@ class MriImage:
         b = type_max - a * imax
         new_img_uint8 = (a * img_float64 + b).astype(target_type)
         return new_img_uint8
+
+    @staticmethod
+    def save(mri_images, images_dir=ORGINAL_DIR,
+             prefix= PREFIX, format=FORMAT):
+        """[summary]
+
+        Args:
+            mri_images (list): List of numpy narray unit8 two dimention. 
+            images_dir (str, "images/orginal"): Path to the directory where the images will be saved. Defaults to ORGINAL_DIR.
+            prefix (str, /sub-001/sub-001-image-): Prefix image filename. Defaults to PREFIX.
+            format (str, .png): Image format. Defaults to FORMAT.
+        """             
+        for indx, data in enumerate(mri_images):
+            file_path = images_dir + prefix + str(indx) + format
+            plt.imsave(file_path, data, cmap="gray", origin="lower")

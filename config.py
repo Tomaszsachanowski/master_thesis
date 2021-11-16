@@ -17,8 +17,13 @@ class Singleton(type):
 
 class Config(metaclass=Singleton):
     MRI_IMAGES = {
-        "PATHS":['MRI_MSC_Dataset/sub-001/ses-1/anat/image-001.nii.gz',]
+        "PATHS":['MRI_MSC_Dataset/sub-001/ses-1/anat/image-001.nii.gz',],
                 #  'MRI_MSC_Dataset/sub-002/ses-1/anat/image-002.nii.gz',
                 #  'MRI_MSC_Dataset/sub-003/ses-1/anat/image-003.nii.gz',
                 #  'MRI_MSC_Dataset/sub-004/ses-1/anat/image-004.nii.gz']
+        "FORMAT": ".png",
+        "PREFIX": "sub-001/sub-001-image-",
+        "ORGINAL_DIR": "images/orginal/",
+        "GENERATED_DIR": "images/generated/",
+
     }
