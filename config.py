@@ -25,5 +25,10 @@ class Config(metaclass=Singleton):
         "PREFIX": "sub-001/sub-001-image-",
         "ORGINAL_DIR": "images/orginal/",
         "GENERATED_DIR": "images/generated/",
-
+    }
+    ARTIFACTS_GENERATOR = {
+        "RANDOM_SEED": 32,
+        "CIRCLE_RADIUS_MIN_MAX": (1.5, 3.0),
+        "CIRCLE_POS_X_MIN_MAX": [125.0, 135.0],
+        "CIRCLE_POS_Y_MIN_MAX": [130.0, 140.0],
     }
