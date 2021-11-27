@@ -30,5 +30,5 @@ class Config(metaclass=Singleton):
         "RANDOM_SEED": 32,
         "CIRCLE_RADIUS_MIN_MAX": (1.5, 3.0),
         "CIRCLE_POS_X_MIN_MAX": [125.0, 135.0],
-        "CIRCLE_POS_Y_MIN_MAX": [130.0, 140.0],
+        "CIRCLE_POS_Y_MIN_MAX": [137.0, 145.0],
     }
