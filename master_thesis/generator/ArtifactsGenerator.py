@@ -1,6 +1,6 @@
 
 from random import Random
-from math import sin, cos
+from math import radians, sin, cos 
 import random
 
 from config import Config
@@ -41,8 +41,76 @@ class ArtifactsGenerator:
             image_draw_elipse.ellipse((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1),
                                     fill=color, outline=color)
 
-    def draw_gradient_triangle(self, pos_x, pos_y, high, gradient_range, transparent_range, levels):
-        pass
+    def draw_gradient_triangle(self, pos_x, pos_y, high_range, alpha, beta, gradient_range, transparent_range, levels):
+        gradient_min, gradient_max = gradient_range
+        transparent_min, transparent_max = transparent_range
+        high_min, high_max = high_range
+
+        gradient_step = float(gradient_max - gradient_min)/levels
+        transparent_step = float(transparent_max - transparent_min)/levels
+        high_step = float(high_max - high_min)/levels
+
+        point_0 = pos_x, pos_y
+        image_draw_triangle = ImageDraw.Draw(self.image)
+
+        for i in range(1, levels+1, 1):
+            high = high_max - high_step*i
+            point_1 = pos_x + high * sin(alpha), pos_y - high * cos(alpha)
+            point_2 = pos_x + high * sin(beta), pos_y - high * cos(beta)
+
+            color = (int(gradient_min + gradient_step*i), int(gradient_min + gradient_step*i),
+                     int(gradient_min + gradient_step*i), int(transparent_min + transparent_step*i))
+
+            image_draw_triangle.polygon(point_0 + point_1 + point_2, fill=color)
+
+
+    # def generate_radiues_noses(self, pos_x, pos_y):
+    #     point_0 = pos_x, pos_y
+    #     randomizer= Random()
+    #     for i in range(8):
+    #         if randomizer.choice([True, False]):
+    #             a = randomizer.uniform(i*0.7853981633974, (i+1)*0.7853981633974)
+    #             b = randomizer.uniform(i*0.7853981633974, (i+1)*0.7853981633974)
+    #             r = randomizer.uniform(5.0, 12.0)
+    #             alpha = randomizer.randint(210, 255)
+    #             color = (255, 255, 255, alpha)
+
+    #             print("Triangle:",i, a, b, r)
+    #             point_1 = int(pos_x + r * sin(a)), int(pos_y - r * cos(a))
+    #             point_2 = int(pos_x + r * sin(b)), int(pos_y - r * cos(b))
+    #             image_draw_triangle = ImageDraw.Draw(self.image)
+    #             image_draw_triangle.polygon(point_0 + point_1 + point_2, fill=color)
+
+    def generate_stars(self, pos_x, pos_y):
+        # NORD STAR
+        randomizer = ArtifactsGenerator.randomizer()
+        high_range = [randomizer.uniform(2,4), randomizer.uniform(15, 19)]
+        alpha = radians(randomizer.uniform(-10, -5))
+        beta = radians(randomizer.uniform(5, 10))
+        gradient_range = [180, 255]
+        transparent_range = [200, 255]
+        levels = 10
+        self.draw_gradient_triangle(pos_x, pos_y, high_range, alpha, beta, gradient_range, transparent_range, levels)
+
+        # NORD EAST STAR
+        high_range = [randomizer.uniform(2,3), randomizer.uniform(10, 15)]
+        alpha = radians(randomizer.uniform(-10+72, 10+72))
+        beta = radians(randomizer.uniform(-10+72, 10+72))
+        gradient_range = [100, 180]
+        transparent_range = [100, 180]
+        levels = 10
+        self.draw_gradient_triangle(pos_x, pos_y, high_range, alpha, beta, gradient_range, transparent_range, levels)
+
+        # SOUT EAST STAR
+        high_range = [randomizer.uniform(3, 5), randomizer.uniform(15, 19)]
+        alpha = radians(randomizer.uniform(-10+2*72, 10+2*72))
+        beta = radians(randomizer.uniform(-10+2*72, 10+2*72))
+        gradient_range = [180, 255]
+        transparent_range = [150, 255]
+        levels = 10
+        self.draw_gradient_triangle(pos_x, pos_y, high_range, alpha, beta, gradient_range, transparent_range, levels)
+
+
     def generate_symmetrical_elipses(
         self, circle_pos_x_range=GENERATOR_CONFIGURATION["CIRCLE_POS_X_RANGE"],
         circle_pos_y_range=GENERATOR_CONFIGURATION["CIRCLE_POS_Y_RANGE"],
@@ -57,15 +125,21 @@ class ArtifactsGenerator:
         pos_x_1 = randomizer.uniform(*circle_pos_x_range)
         pos_y_1 = randomizer.uniform(*circle_pos_y_range)
         radious_range = [2, randomizer.uniform(*circle_radious)]
- 
+
         self.draw_gradient_elipse(pos_x_1, pos_y_1, radious_range, gradient_range, transparent_range, levels)
+        self.generate_stars(pos_x_1, pos_y_1)
+        self.image.show()
 
-        # SECOND ELIPSE
-        pos_x_2 = pos_x_1 + randomizer.uniform(-2.0, 2.0)
-        pos_y_2 = 2*127.0 - pos_y_1 + randomizer.uniform(-2.0, 2.0)
-        radious_range = [2, randomizer.uniform(*circle_radious)]
+        # # SECOND ELIPSE
+        # pos_x_2 = pos_x_1 + randomizer.uniform(-2.0, 2.0)
+        # pos_y_2 = 2*127.0 - pos_y_1 + randomizer.uniform(-2.0, 2.0)
+        # radious_range = [2, randomizer.uniform(*circle_radious)]
 
-        self.draw_gradient_elipse(pos_x_2, pos_y_2, radious_range, [100, 255], transparent_range, levels)
+        # self.draw_gradient_elipse(pos_x_2, pos_y_2, radious_range, [100, 255], transparent_range, levels)
+
+
+
+
 
         # # 2*127.0 - randomizer.uniform(*self.circle_pos_y_min_max) + randomizer.uniform(-1.5, 1.5)
         # w = randomizer.uniform(*self.circle_radious_min_max)
@@ -127,7 +201,6 @@ class ArtifactsGenerator:
         #     print((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1, color))
         #     image_draw_elipse.ellipse((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1),
         #                             fill=color, outline=color)
-        self.image.show()
 
         # self.generate_radiues_noses(pos_x, pos_y)
         # print(elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1, w, h, alpha)
@@ -154,22 +227,7 @@ class ArtifactsGenerator:
         # return self.image
 
 
-    def generate_radiues_noses(self, pos_x, pos_y):
-        point_0 = pos_x, pos_y
-        randomizer= Random()
-        for i in range(8):
-            if randomizer.choice([True, False]):
-                a = randomizer.uniform(i*0.7853981633974, (i+1)*0.7853981633974)
-                b = randomizer.uniform(i*0.7853981633974, (i+1)*0.7853981633974)
-                r = randomizer.uniform(5.0, 12.0)
-                alpha = randomizer.randint(210, 255)
-                color = (255, 255, 255, alpha)
 
-                print("Triangle:",i, a, b, r)
-                point_1 = int(pos_x + r * sin(a)), int(pos_y - r * cos(a))
-                point_2 = int(pos_x + r * sin(b)), int(pos_y - r * cos(b))
-                image_draw_triangle = ImageDraw.Draw(self.image)
-                image_draw_triangle.polygon(point_0 + point_1 + point_2, fill=color)
 
 
 
