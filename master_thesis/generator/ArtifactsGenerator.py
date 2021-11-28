@@ -11,61 +11,147 @@ GENERATOR_CONFIGURATION = Config.ARTIFACTS_GENERATOR
 
 
 class ArtifactsGenerator:
-    def __init__(self, data_img, circle_pos_x_min_max=GENERATOR_CONFIGURATION["CIRCLE_POS_X_MIN_MAX"],
-                 circle_pos_y_min_max=GENERATOR_CONFIGURATION["CIRCLE_POS_Y_MIN_MAX"],
-                 circle_radious_min_max=GENERATOR_CONFIGURATION["CIRCLE_RADIUS_MIN_MAX"]):
-
+    def __init__(self, data_img):
         self.image = Image.fromarray(data_img[:,:]).convert('RGBA')
-        self.circle_pos_x_min_max = circle_pos_x_min_max
-        self.circle_pos_y_min_max = circle_pos_y_min_max
-        self.circle_radious_min_max = circle_radious_min_max
+
 
     @staticmethod
     def randomizer():
         randomizer= Random()
         return randomizer
 
-    def generate_symmetrical_elipses(self):
+    def draw_gradient_elipse(self, pos_x, pos_y, radious_range, gradient_range, transparent_range, levels):
+        gradient_min, gradient_max = gradient_range
+        transparent_min, transparent_max = transparent_range
+        radious_min, radious_max = radious_range
+
+        gradient_step = float(gradient_max - gradient_min)/levels
+        transparent_step = float(transparent_max - transparent_min)/levels
+        radious_step = float(radious_max - radious_min)/levels
+
+        for i in range(1, levels+1, 1):
+            elipse_x_0 = pos_x - (radious_max - radious_step*i) 
+            elipse_x_1 = pos_x + (radious_max - radious_step*i)
+            elipse_y_0 = pos_y - (radious_max - radious_step*i)
+            elipse_y_1 = pos_y + (radious_max - radious_step*i)
+            color = (int(gradient_min + gradient_step*i), int(gradient_min + gradient_step*i),
+                     int(gradient_min + gradient_step*i), int(transparent_min + transparent_step*i))
+
+            image_draw_elipse = ImageDraw.Draw(self.image)
+            image_draw_elipse.ellipse((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1),
+                                    fill=color, outline=color)
+
+    def draw_gradient_triangle(self, pos_x, pos_y, high, gradient_range, transparent_range, levels):
+        pass
+    def generate_symmetrical_elipses(
+        self, circle_pos_x_range=GENERATOR_CONFIGURATION["CIRCLE_POS_X_RANGE"],
+        circle_pos_y_range=GENERATOR_CONFIGURATION["CIRCLE_POS_Y_RANGE"],
+        circle_radious=GENERATOR_CONFIGURATION["CIRCLE_RADIUS"],
+        gradient_range=GENERATOR_CONFIGURATION["GRADIENT_RANGE"],
+        transparent_range=GENERATOR_CONFIGURATION["TRANSPARENT_RANGE"],
+        levels=GENERATOR_CONFIGURATION["LEVELS"]):
+
         randomizer = ArtifactsGenerator.randomizer()
+
+        # FIRST ELIPSE
+        pos_x_1 = randomizer.uniform(*circle_pos_x_range)
+        pos_y_1 = randomizer.uniform(*circle_pos_y_range)
+        radious_range = [2, randomizer.uniform(*circle_radious)]
  
-        pos_x = randomizer.uniform(*self.circle_pos_x_min_max)
-        pos_y = randomizer.uniform(*self.circle_pos_y_min_max)
-        w = randomizer.uniform(*self.circle_radious_min_max)
-        h = randomizer.uniform(*self.circle_radious_min_max)
-        alpha = randomizer.randint(210, 255)
+        self.draw_gradient_elipse(pos_x_1, pos_y_1, radious_range, gradient_range, transparent_range, levels)
+
+        # SECOND ELIPSE
+        pos_x_2 = pos_x_1 + randomizer.uniform(-2.0, 2.0)
+        pos_y_2 = 2*127.0 - pos_y_1 + randomizer.uniform(-2.0, 2.0)
+        radious_range = [2, randomizer.uniform(*circle_radious)]
+
+        self.draw_gradient_elipse(pos_x_2, pos_y_2, radious_range, [100, 255], transparent_range, levels)
+
+        # # 2*127.0 - randomizer.uniform(*self.circle_pos_y_min_max) + randomizer.uniform(-1.5, 1.5)
+        # w = randomizer.uniform(*self.circle_radious_min_max)
+        # h = randomizer.uniform(*self.circle_radious_min_max)
+        # alpha = randomizer.randint(210, 255)
+
+        # elipse_x_0 = pos_x - w 
+        # elipse_x_1 = pos_x + w 
+        # elipse_y_0 = pos_y - h 
+        # elipse_y_1 = pos_y + h 
+        # color = (255, 255, 255, alpha)
+
+        # image_draw_elipse = ImageDraw.Draw(self.image)
+        # image_draw_elipse.ellipse((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1),
+        #                           fill=color, outline=color)
+
+        # self.generate_radiues_noses(pos_x, pos_y)
+        # print(elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1, w, h, alpha)
+        # pos_x = randomizer.uniform(*circle_pos_x_range)
+        # pos_y = randomizer.uniform(*circle_pos_y_range)
+        # radious_range = [1, randomizer.uniform(*circle_radious)]
  
-        elipse_x_0 = pos_x - w 
-        elipse_x_1 = pos_x + w 
-        elipse_y_0 = pos_y - h 
-        elipse_y_1 = pos_y + h 
-        color = (255, 255, 255, alpha)
+        # self.draw_gradient_elipse(pos_x, pos_y, radious_range, gradient_range, alpha_range, levels)
+        # for j in range(5):
+        #     i = 4-j
+        #     print(i)
+        #     elipse_x_0 = pos_x - w/(5-i) 
+        #     elipse_x_1 = pos_x + w/(5-i) 
+        #     elipse_y_0 = pos_y - h/(5-i) 
+        #     elipse_y_1 = pos_y + h/(5-i) 
+        #     color = (int(255-15*i), int(255-15*i), int(255-15*i), int(255-15*i))
+        #     image_draw_elipse.ellipse((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1),
+        #                             fill=color, outline=color)
+            # self.image = self.image.resize((255, 255))
 
-        image_draw_elipse = ImageDraw.Draw(self.image)
-        image_draw_elipse.ellipse((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1),
-                                  fill=color, outline=color)
+        # i = 3
+        # elipse_x_0 = pos_x - w/(10-i) 
+        # elipse_x_1 = pos_x + w/(10-i) 
+        # elipse_y_0 = pos_y - h/(10-i) 
+        # elipse_y_1 = pos_y + h/(10-i) 
+        # color = (255, 255, 255, 255)
+        # image_draw_elipse.ellipse((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1),
+        #                         fill=color, outline=color)
+        # elipse_x_0 = pos_x - w/2.0 
+        # elipse_x_1 = pos_x + w/2.0 
+        # elipse_y_0 = pos_y - h/2.0 
+        # elipse_y_1 = pos_y + h/2.0 
+        # color = (20, 20, 20, alpha)
+        # image_draw_elipse.ellipse((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1),
+        #                         fill=color, outline=color)
+        # # for i in range(10):
+        #     w_i = (w/10.0)*i
+        #     h_i = (h/10.0)*i
+        #     elipse_x_0 = pos_x - w_i
+        #     elipse_x_1 = pos_x + w_i 
+        #     elipse_y_0 = pos_y - h_i 
+        #     elipse_y_1 = pos_y + h_i
+        #     color = (int(255 - 25.5*i), int(255 - 25.5*i), int(255 - 25.5*i), alpha)
+        #     print((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1, color))
+        #     image_draw_elipse.ellipse((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1),
+        #                             fill=color, outline=color)
+        self.image.show()
 
-        self.generate_radiues_noses(pos_x, pos_y)
-        print(elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1, w, h, alpha)
+        # self.generate_radiues_noses(pos_x, pos_y)
+        # print(elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1, w, h, alpha)
 
-        pos_x = pos_x + randomizer.uniform(-1.5, 1.5)
-        pos_y = 2*127 - randomizer.uniform(*self.circle_pos_y_min_max) + randomizer.uniform(-1.5, 1.5)
-        w = randomizer.uniform(*self.circle_radious_min_max)
-        h = randomizer.uniform(*self.circle_radious_min_max)
-        alpha = randomizer.randint(210, 255)
+        # pos_x = pos_x + randomizer.uniform(-2.0, 2.0)
+        # pos_y = 2*127.0 - pos_y + randomizer.uniform(-2.0, 2.0) 
+        # # 2*127.0 - randomizer.uniform(*self.circle_pos_y_min_max) + randomizer.uniform(-1.5, 1.5)
+        # w = randomizer.uniform(*self.circle_radious_min_max)
+        # h = randomizer.uniform(*self.circle_radious_min_max)
+        # alpha = randomizer.randint(210, 255)
 
-        elipse_x_0 = pos_x - w 
-        elipse_x_1 = pos_x + w 
-        elipse_y_0 = pos_y - h 
-        elipse_y_1 = pos_y + h 
-        color = (255, 255, 255, alpha)
+        # elipse_x_0 = pos_x - w 
+        # elipse_x_1 = pos_x + w 
+        # elipse_y_0 = pos_y - h 
+        # elipse_y_1 = pos_y + h 
+        # color = (255, 255, 255, alpha)
 
-        image_draw_elipse = ImageDraw.Draw(self.image)
-        image_draw_elipse.ellipse((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1),
-                                  fill=color, outline=color)
+        # image_draw_elipse = ImageDraw.Draw(self.image)
+        # image_draw_elipse.ellipse((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1),
+        #                           fill=color, outline=color)
 
-        self.generate_radiues_noses(pos_x, pos_y)
-        print(elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1, w, h, alpha)
-        return self.image
+        # self.generate_radiues_noses(pos_x, pos_y)
+        # print(elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1, w, h, alpha)
+        # return self.image
 
 
     def generate_radiues_noses(self, pos_x, pos_y):

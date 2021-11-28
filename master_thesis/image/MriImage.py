@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 
 from config import Config
 
-
 PATHS_MRI_IMAGE = Config.MRI_IMAGES["PATHS"]
 FORMAT = Config.MRI_IMAGES["FORMAT"]
 PREFIX = Config.MRI_IMAGES["PREFIX"]

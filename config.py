@@ -28,7 +28,10 @@ class Config(metaclass=Singleton):
     }
     ARTIFACTS_GENERATOR = {
         "RANDOM_SEED": 32,
-        "CIRCLE_RADIUS_MIN_MAX": (1.5, 3.0),
-        "CIRCLE_POS_X_MIN_MAX": [125.0, 135.0],
-        "CIRCLE_POS_Y_MIN_MAX": [137.0, 145.0],
+        "CIRCLE_RADIUS": (4.5, 6.5),
+        "CIRCLE_POS_X_RANGE": [125.0, 135.0],
+        "CIRCLE_POS_Y_RANGE": [137.0, 145.0],
+        "TRANSPARENT_RANGE": [210, 255],
+        "GRADIENT_RANGE": [100, 255],
+        "LEVELS": 5,
     }
