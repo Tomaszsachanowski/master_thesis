@@ -1,9 +1,9 @@
 
 from random import Random
-from math import radians, sin, cos 
+from math import radians, sin, cos, ceil, floor
 
 from config import Config
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFilter
 
 
 ARTIFACTS_ELIPSE = Config.ARTIFACTS_ELIPSE
@@ -22,6 +22,11 @@ class ArtifactsGenerator:
     def randomizer():
         randomizer= Random()
         return randomizer
+
+    def blur(self, pos_x_0, pos_y_0, pos_x_1, pos_y_1):
+        region_blured = self.image.crop((pos_x_0, pos_y_0, pos_x_1, pos_y_1))
+        region_blured = region_blured.filter(ImageFilter.GaussianBlur(1))
+        self.image.paste(region_blured, (pos_x_0, pos_y_0, pos_x_1, pos_y_1))
 
     def draw_gradient_elipse(self, pos_x, pos_y, radious_range, gradient_range, transparent_range, levels):
         gradient_min, gradient_max = gradient_range
@@ -43,6 +48,12 @@ class ArtifactsGenerator:
             image_draw_elipse = ImageDraw.Draw(self.image)
             image_draw_elipse.ellipse((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1),
                                     fill=color, outline=color)
+        # Rectangle for blur
+        elipse_x_0 = floor(pos_x - radious_range[1]) 
+        elipse_x_1 = ceil(pos_x + radious_range[1])
+        elipse_y_0 =  floor(pos_y - radious_range[1])
+        elipse_y_1 =  ceil(pos_y + radious_range[1])
+        self.blur(elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1)
 
     def draw_gradient_triangle(self, pos_x, pos_y, high_range, alpha, beta, gradient_range, transparent_range, levels):
         gradient_min, gradient_max = gradient_range
@@ -128,7 +139,6 @@ class ArtifactsGenerator:
         levels = ARTIFACTS_ELIPSE["LEVELS"]
         self.draw_gradient_elipse(pos_x_1, pos_y_1, radious_range, gradient_range,
                                   transparent_range, levels)
-        self.generate_star_arms(pos_x_1, pos_y_1)
 
         # SECOND ELIPSE
         pos_x_2 = pos_x_1 + randomizer.uniform(-2.0, 2.0)
@@ -140,6 +150,6 @@ class ArtifactsGenerator:
         levels = ARTIFACTS_ELIPSE["LEVELS"]
         self.draw_gradient_elipse(pos_x_2, pos_y_2, radious_range, gradient_range,
                                   transparent_range, levels)
-        self.generate_star_arms(pos_x_2, pos_y_2)
+        # self.generate_star_arms(pos_x_2, pos_y_2)
 
         self.image.show()
