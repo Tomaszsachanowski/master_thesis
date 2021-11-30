@@ -17,7 +17,6 @@ class ArtifactsGenerator:
     def __init__(self, data_img):
         self.image = Image.fromarray(data_img[:,:]).convert('RGBA')
 
-
     @staticmethod
     def randomizer():
         randomizer= Random()
@@ -48,6 +47,7 @@ class ArtifactsGenerator:
             image_draw_elipse = ImageDraw.Draw(self.image)
             image_draw_elipse.ellipse((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1),
                                     fill=color, outline=color)
+
         # Rectangle for blur
         elipse_x_0 = floor(pos_x - radious_range[1]) 
         elipse_x_1 = ceil(pos_x + radious_range[1])
@@ -76,6 +76,11 @@ class ArtifactsGenerator:
                      int(gradient_min + gradient_step*i), int(transparent_min + transparent_step*i))
 
             image_draw_triangle.polygon(point_0 + point_1 + point_2, fill=color)
+
+        # Rectangle for blur
+        all_pos_x = [pos_x, pos_x + high_max * sin(alpha), pos_x + high_max * sin(beta)]
+        all_pos_y = [pos_y, pos_y - high_max * cos(alpha), pos_y - high_max * cos(beta)]
+        self.blur(floor(min(all_pos_x)), floor(min(all_pos_y)), ceil(max(all_pos_x)), ceil(max(all_pos_y)))
 
     def generate_star_arms(self, pos_x, pos_y):
         randomizer = ArtifactsGenerator.randomizer()
@@ -139,6 +144,7 @@ class ArtifactsGenerator:
         levels = ARTIFACTS_ELIPSE["LEVELS"]
         self.draw_gradient_elipse(pos_x_1, pos_y_1, radious_range, gradient_range,
                                   transparent_range, levels)
+        self.generate_star_arms(pos_x_1, pos_y_1)
 
         # SECOND ELIPSE
         pos_x_2 = pos_x_1 + randomizer.uniform(-2.0, 2.0)
@@ -150,6 +156,6 @@ class ArtifactsGenerator:
         levels = ARTIFACTS_ELIPSE["LEVELS"]
         self.draw_gradient_elipse(pos_x_2, pos_y_2, radious_range, gradient_range,
                                   transparent_range, levels)
-        # self.generate_star_arms(pos_x_2, pos_y_2)
+        self.generate_star_arms(pos_x_2, pos_y_2)
 
         self.image.show()
