@@ -1,18 +1,17 @@
 
 from random import Random
 from math import radians, sin, cos 
-import random
 
 from config import Config
 from PIL import Image, ImageDraw
 
 
 ARTIFACTS_ELIPSE = Config.ARTIFACTS_ELIPSE
-NORD_STAR = Config.ARTIFACTS_NORD_STAR
-NORD_EAST_STAR = Config.ARTIFACTS_NORD_EAST_STAR
-SOUTH_EAST_STAR = Config.ARTIFACTS_SOUTH_EAST_STAR
-SOUTH_WEST_STAR = Config.ARTIFACTS_SOUTH_WEST_STAR
-NORD_WEST_STAR = Config.ARTIFACTS_NORD_WEST_STAR
+NORD_ARM = Config.ARTIFACTS_NORD_ARM
+NORD_EAST_ARM = Config.ARTIFACTS_NORD_EAST_ARM
+SOUTH_EAST_ARM = Config.ARTIFACTS_SOUTH_EAST_ARM
+SOUTH_WEST_ARM = Config.ARTIFACTS_SOUTH_WEST_ARM
+NORD_WEST_ARM = Config.ARTIFACTS_NORD_WEST_ARM
 
 class ArtifactsGenerator:
     def __init__(self, data_img):
@@ -67,167 +66,80 @@ class ArtifactsGenerator:
 
             image_draw_triangle.polygon(point_0 + point_1 + point_2, fill=color)
 
-    def generate_stars(self, pos_x, pos_y):
+    def generate_star_arms(self, pos_x, pos_y):
         randomizer = ArtifactsGenerator.randomizer()
 
-        # NORD STAR
-        high_range = [randomizer.uniform(*NORD_STAR["HIGH_MIN"]), randomizer.uniform(*NORD_STAR["HIGH_MAX"])]
-        alpha = radians(randomizer.uniform(*NORD_STAR["ALPHA"]))
-        beta = radians(randomizer.uniform(*NORD_STAR["BETA"]))
-        gradient_range = NORD_STAR["GRADIENT_RANGE"]
-        transparent_range = NORD_STAR["TRANSPARENT_RANGE"]
-        levels = NORD_STAR["LEVELS"]
+        # NORD STAR ARM
+        high_range = [randomizer.uniform(*NORD_ARM["HIGH_MIN"]), randomizer.uniform(*NORD_ARM["HIGH_MAX"])]
+        alpha = radians(randomizer.uniform(*NORD_ARM["ALPHA"]))
+        beta = radians(randomizer.uniform(*NORD_ARM["BETA"]))
+        gradient_range = NORD_ARM["GRADIENT_RANGE"]
+        transparent_range = NORD_ARM["TRANSPARENT_RANGE"]
+        levels = NORD_ARM["LEVELS"]
         self.draw_gradient_triangle(pos_x, pos_y, high_range, alpha, beta, gradient_range, transparent_range, levels)
 
         # NORD EAST STAR
-        high_range = [randomizer.uniform(*NORD_EAST_STAR["HIGH_MIN"]), randomizer.uniform(*NORD_EAST_STAR["HIGH_MAX"])]
-        alpha = radians(randomizer.uniform(*NORD_EAST_STAR["ALPHA"]))
-        beta = radians(randomizer.uniform(*NORD_EAST_STAR["BETA"]))
-        gradient_range = NORD_EAST_STAR["GRADIENT_RANGE"]
-        transparent_range = NORD_EAST_STAR["TRANSPARENT_RANGE"]
-        levels = NORD_EAST_STAR["LEVELS"]
+        high_range = [randomizer.uniform(*NORD_EAST_ARM["HIGH_MIN"]), randomizer.uniform(*NORD_EAST_ARM["HIGH_MAX"])]
+        alpha = radians(randomizer.uniform(*NORD_EAST_ARM["ALPHA"]))
+        beta = radians(randomizer.uniform(*NORD_EAST_ARM["BETA"]))
+        gradient_range = NORD_EAST_ARM["GRADIENT_RANGE"]
+        transparent_range = NORD_EAST_ARM["TRANSPARENT_RANGE"]
+        levels = NORD_EAST_ARM["LEVELS"]
         self.draw_gradient_triangle(pos_x, pos_y, high_range, alpha, beta, gradient_range, transparent_range, levels)
 
         # SOUT EAST STAR
-        high_range = [randomizer.uniform(*SOUTH_EAST_STAR["HIGH_MIN"]), randomizer.uniform(*SOUTH_EAST_STAR["HIGH_MAX"])]
-        alpha = radians(randomizer.uniform(*SOUTH_EAST_STAR["ALPHA"]))
-        beta = radians(randomizer.uniform(*SOUTH_EAST_STAR["BETA"]))
-        gradient_range = SOUTH_EAST_STAR["GRADIENT_RANGE"]
-        transparent_range = SOUTH_EAST_STAR["TRANSPARENT_RANGE"]
-        levels = SOUTH_EAST_STAR["LEVELS"]
+        high_range = [randomizer.uniform(*SOUTH_EAST_ARM["HIGH_MIN"]), randomizer.uniform(*SOUTH_EAST_ARM["HIGH_MAX"])]
+        alpha = radians(randomizer.uniform(*SOUTH_EAST_ARM["ALPHA"]))
+        beta = radians(randomizer.uniform(*SOUTH_EAST_ARM["BETA"]))
+        gradient_range = SOUTH_EAST_ARM["GRADIENT_RANGE"]
+        transparent_range = SOUTH_EAST_ARM["TRANSPARENT_RANGE"]
+        levels = SOUTH_EAST_ARM["LEVELS"]
         self.draw_gradient_triangle(pos_x, pos_y, high_range, alpha, beta, gradient_range, transparent_range, levels)
 
         # SOUT WEST STAR
-        high_range = [randomizer.uniform(*SOUTH_WEST_STAR["HIGH_MIN"]), randomizer.uniform(*SOUTH_WEST_STAR["HIGH_MAX"])]
-        alpha = radians(randomizer.uniform(*SOUTH_WEST_STAR["ALPHA"]))
-        beta = radians(randomizer.uniform(*SOUTH_WEST_STAR["BETA"]))
-        gradient_range = SOUTH_WEST_STAR["GRADIENT_RANGE"]
-        transparent_range = SOUTH_WEST_STAR["TRANSPARENT_RANGE"]
-        levels = SOUTH_WEST_STAR["LEVELS"]
+        high_range = [randomizer.uniform(*SOUTH_WEST_ARM["HIGH_MIN"]), randomizer.uniform(*SOUTH_WEST_ARM["HIGH_MAX"])]
+        alpha = radians(randomizer.uniform(*SOUTH_WEST_ARM["ALPHA"]))
+        beta = radians(randomizer.uniform(*SOUTH_WEST_ARM["BETA"]))
+        gradient_range = SOUTH_WEST_ARM["GRADIENT_RANGE"]
+        transparent_range = SOUTH_WEST_ARM["TRANSPARENT_RANGE"]
+        levels = SOUTH_WEST_ARM["LEVELS"]
         self.draw_gradient_triangle(pos_x, pos_y, high_range, alpha, beta, gradient_range, transparent_range, levels)
 
         # NORD WEST STAR
-        high_range = [randomizer.uniform(*NORD_WEST_STAR["HIGH_MIN"]), randomizer.uniform(*NORD_WEST_STAR["HIGH_MAX"])]
-        alpha = radians(randomizer.uniform(*NORD_WEST_STAR["ALPHA"]))
-        beta = radians(randomizer.uniform(*NORD_WEST_STAR["BETA"]))
-        gradient_range = NORD_WEST_STAR["GRADIENT_RANGE"]
-        transparent_range = NORD_WEST_STAR["TRANSPARENT_RANGE"]
-        levels = NORD_WEST_STAR["LEVELS"]
+        high_range = [randomizer.uniform(*NORD_WEST_ARM["HIGH_MIN"]), randomizer.uniform(*NORD_WEST_ARM["HIGH_MAX"])]
+        alpha = radians(randomizer.uniform(*NORD_WEST_ARM["ALPHA"]))
+        beta = radians(randomizer.uniform(*NORD_WEST_ARM["BETA"]))
+        gradient_range = NORD_WEST_ARM["GRADIENT_RANGE"]
+        transparent_range = NORD_WEST_ARM["TRANSPARENT_RANGE"]
+        levels = NORD_WEST_ARM["LEVELS"]
         self.draw_gradient_triangle(pos_x, pos_y, high_range, alpha, beta, gradient_range, transparent_range, levels)
 
 
-    def generate_symmetrical_elipses(self):
+    def generate_symmetrical_stars(self):
         randomizer = ArtifactsGenerator.randomizer()
 
         # FIRST ELIPSE
         pos_x_1 = randomizer.uniform(*ARTIFACTS_ELIPSE["CIRCLE_POS_X_RANGE"])
         pos_y_1 = randomizer.uniform(*ARTIFACTS_ELIPSE["CIRCLE_POS_Y_RANGE"])
-        radious_range = [randomizer.uniform(*ARTIFACTS_ELIPSE["RADIUS_MIN"]), randomizer.uniform(*ARTIFACTS_ELIPSE["RADIUS_MAX"])]
+        radious_range = [randomizer.uniform(*ARTIFACTS_ELIPSE["RADIUS_MIN"]),
+                         randomizer.uniform(*ARTIFACTS_ELIPSE["RADIUS_MAX"])]
         gradient_range = ARTIFACTS_ELIPSE["GRADIENT_RANGE"]
         transparent_range = ARTIFACTS_ELIPSE["TRANSPARENT_RANGE"]
         levels = ARTIFACTS_ELIPSE["LEVELS"]
-        self.draw_gradient_elipse(pos_x_1, pos_y_1, radious_range, gradient_range, transparent_range, levels)
-        self.generate_stars(pos_x_1, pos_y_1)
+        self.draw_gradient_elipse(pos_x_1, pos_y_1, radious_range, gradient_range,
+                                  transparent_range, levels)
+        self.generate_star_arms(pos_x_1, pos_y_1)
+
+        # SECOND ELIPSE
+        pos_x_2 = pos_x_1 + randomizer.uniform(-2.0, 2.0)
+        pos_y_2 = 2*127.0 - pos_y_1 + randomizer.uniform(-2.0, 2.0)
+        radious_range = [randomizer.uniform(*ARTIFACTS_ELIPSE["RADIUS_MIN"]),
+                         randomizer.uniform(*ARTIFACTS_ELIPSE["RADIUS_MAX"])]
+        gradient_range = ARTIFACTS_ELIPSE["GRADIENT_RANGE"]
+        transparent_range = ARTIFACTS_ELIPSE["TRANSPARENT_RANGE"]
+        levels = ARTIFACTS_ELIPSE["LEVELS"]
+        self.draw_gradient_elipse(pos_x_2, pos_y_2, radious_range, gradient_range,
+                                  transparent_range, levels)
+        self.generate_star_arms(pos_x_2, pos_y_2)
+
         self.image.show()
-
-        # # SECOND ELIPSE
-        # pos_x_2 = pos_x_1 + randomizer.uniform(-2.0, 2.0)
-        # pos_y_2 = 2*127.0 - pos_y_1 + randomizer.uniform(-2.0, 2.0)
-        # radious_range = [2, randomizer.uniform(*circle_radious)]
-
-        # self.draw_gradient_elipse(pos_x_2, pos_y_2, radious_range, [100, 255], transparent_range, levels)
-
-
-
-
-
-        # # 2*127.0 - randomizer.uniform(*self.circle_pos_y_min_max) + randomizer.uniform(-1.5, 1.5)
-        # w = randomizer.uniform(*self.circle_radious_min_max)
-        # h = randomizer.uniform(*self.circle_radious_min_max)
-        # alpha = randomizer.randint(210, 255)
-
-        # elipse_x_0 = pos_x - w 
-        # elipse_x_1 = pos_x + w 
-        # elipse_y_0 = pos_y - h 
-        # elipse_y_1 = pos_y + h 
-        # color = (255, 255, 255, alpha)
-
-        # image_draw_elipse = ImageDraw.Draw(self.image)
-        # image_draw_elipse.ellipse((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1),
-        #                           fill=color, outline=color)
-
-        # self.generate_radiues_noses(pos_x, pos_y)
-        # print(elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1, w, h, alpha)
-        # pos_x = randomizer.uniform(*circle_pos_x_range)
-        # pos_y = randomizer.uniform(*circle_pos_y_range)
-        # radious_range = [1, randomizer.uniform(*circle_radious)]
- 
-        # self.draw_gradient_elipse(pos_x, pos_y, radious_range, gradient_range, alpha_range, levels)
-        # for j in range(5):
-        #     i = 4-j
-        #     print(i)
-        #     elipse_x_0 = pos_x - w/(5-i) 
-        #     elipse_x_1 = pos_x + w/(5-i) 
-        #     elipse_y_0 = pos_y - h/(5-i) 
-        #     elipse_y_1 = pos_y + h/(5-i) 
-        #     color = (int(255-15*i), int(255-15*i), int(255-15*i), int(255-15*i))
-        #     image_draw_elipse.ellipse((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1),
-        #                             fill=color, outline=color)
-            # self.image = self.image.resize((255, 255))
-
-        # i = 3
-        # elipse_x_0 = pos_x - w/(10-i) 
-        # elipse_x_1 = pos_x + w/(10-i) 
-        # elipse_y_0 = pos_y - h/(10-i) 
-        # elipse_y_1 = pos_y + h/(10-i) 
-        # color = (255, 255, 255, 255)
-        # image_draw_elipse.ellipse((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1),
-        #                         fill=color, outline=color)
-        # elipse_x_0 = pos_x - w/2.0 
-        # elipse_x_1 = pos_x + w/2.0 
-        # elipse_y_0 = pos_y - h/2.0 
-        # elipse_y_1 = pos_y + h/2.0 
-        # color = (20, 20, 20, alpha)
-        # image_draw_elipse.ellipse((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1),
-        #                         fill=color, outline=color)
-        # # for i in range(10):
-        #     w_i = (w/10.0)*i
-        #     h_i = (h/10.0)*i
-        #     elipse_x_0 = pos_x - w_i
-        #     elipse_x_1 = pos_x + w_i 
-        #     elipse_y_0 = pos_y - h_i 
-        #     elipse_y_1 = pos_y + h_i
-        #     color = (int(255 - 25.5*i), int(255 - 25.5*i), int(255 - 25.5*i), alpha)
-        #     print((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1, color))
-        #     image_draw_elipse.ellipse((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1),
-        #                             fill=color, outline=color)
-
-        # self.generate_radiues_noses(pos_x, pos_y)
-        # print(elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1, w, h, alpha)
-
-        # pos_x = pos_x + randomizer.uniform(-2.0, 2.0)
-        # pos_y = 2*127.0 - pos_y + randomizer.uniform(-2.0, 2.0) 
-        # # 2*127.0 - randomizer.uniform(*self.circle_pos_y_min_max) + randomizer.uniform(-1.5, 1.5)
-        # w = randomizer.uniform(*self.circle_radious_min_max)
-        # h = randomizer.uniform(*self.circle_radious_min_max)
-        # alpha = randomizer.randint(210, 255)
-
-        # elipse_x_0 = pos_x - w 
-        # elipse_x_1 = pos_x + w 
-        # elipse_y_0 = pos_y - h 
-        # elipse_y_1 = pos_y + h 
-        # color = (255, 255, 255, alpha)
-
-        # image_draw_elipse = ImageDraw.Draw(self.image)
-        # image_draw_elipse.ellipse((elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1),
-        #                           fill=color, outline=color)
-
-        # self.generate_radiues_noses(pos_x, pos_y)
-        # print(elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1, w, h, alpha)
-        # return self.image
-
-
-
-
-
-

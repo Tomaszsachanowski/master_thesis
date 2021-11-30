@@ -36,7 +36,7 @@ class Config(metaclass=Singleton):
         "GRADIENT_RANGE": [100, 255],
         "LEVELS": 5,
     }
-    ARTIFACTS_NORD_STAR = {
+    ARTIFACTS_NORD_ARM = {
         "HIGH_MIN": [2, 4],
         "HIGH_MAX": [16, 19],
         "ALPHA": [80, 80],
@@ -45,7 +45,7 @@ class Config(metaclass=Singleton):
         "TRANSPARENT_RANGE": [200, 255],
         "LEVELS": 20
     }
-    ARTIFACTS_NORD_EAST_STAR = {
+    ARTIFACTS_NORD_EAST_ARM = {
         "HIGH_MIN": [2, 3],
         "HIGH_MAX": [5, 9],
         "ALPHA": [150, 155],
@@ -54,7 +54,7 @@ class Config(metaclass=Singleton):
         "TRANSPARENT_RANGE": [200, 255],
         "LEVELS": 10
     }
-    ARTIFACTS_SOUTH_EAST_STAR = {
+    ARTIFACTS_SOUTH_EAST_ARM = {
         "HIGH_MIN": [3, 5],
         "HIGH_MAX": [15, 19],
         "ALPHA": [220, 225],
@@ -63,7 +63,7 @@ class Config(metaclass=Singleton):
         "TRANSPARENT_RANGE": [200, 255],
         "LEVELS": 20
     }
-    ARTIFACTS_SOUTH_WEST_STAR = {
+    ARTIFACTS_SOUTH_WEST_ARM = {
         "HIGH_MIN": [3, 5],
         "HIGH_MAX": [8, 10],
         "ALPHA": [290, 295],
@@ -72,7 +72,7 @@ class Config(metaclass=Singleton):
         "TRANSPARENT_RANGE": [200, 255],
         "LEVELS": 10
     }
-    ARTIFACTS_NORD_WEST_STAR = {
+    ARTIFACTS_NORD_WEST_ARM = {
         "HIGH_MIN": [3, 5],
         "HIGH_MAX": [15, 19],
         "ALPHA": [360, 365],
