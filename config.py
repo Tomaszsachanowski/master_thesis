@@ -17,10 +17,10 @@ class Singleton(type):
 
 class Config(metaclass=Singleton):
     MRI_IMAGES = {
-        "PATHS":['MRI_MSC_Dataset/sub-001/ses-1/anat/image-001.nii.gz',],
-                #  'MRI_MSC_Dataset/sub-002/ses-1/anat/image-002.nii.gz',
-                #  'MRI_MSC_Dataset/sub-003/ses-1/anat/image-003.nii.gz',
-                #  'MRI_MSC_Dataset/sub-004/ses-1/anat/image-004.nii.gz']
+        "PATHS": ['MRI_MSC_Dataset/sub-001/ses-1/anat/image-001.nii.gz'],
+        #  'MRI_MSC_Dataset/sub-002/ses-1/anat/image-002.nii.gz',
+        #  'MRI_MSC_Dataset/sub-003/ses-1/anat/image-003.nii.gz',
+        #  'MRI_MSC_Dataset/sub-004/ses-1/anat/image-004.nii.gz']
         "FORMAT": ".png",
         "PREFIX": "sub-001/sub-001-image-",
         "ORGINAL_DIR": "images/orginal/",
@@ -28,56 +28,67 @@ class Config(metaclass=Singleton):
     }
     ARTIFACTS_ELIPSE = {
         "RANDOM_SEED": 32,
-        "RADIUS_MIN": (1.5, 2.5),
-        "RADIUS_MAX": (4.5, 6.5),
+        "RADIUS_MIN": (1.5, 1.9),
+        "RADIUS_MAX": (4.5, 5.1),
         "CIRCLE_POS_X_RANGE": [125.0, 135.0],
         "CIRCLE_POS_Y_RANGE": [137.0, 145.0],
-        "TRANSPARENT_RANGE": [210, 255],
-        "GRADIENT_RANGE": [100, 255],
-        "LEVELS": 5,
+        "TRANSPARENT_RANGE": [255, 255],
+        "GRADIENT_RANGE": [135, 255],
+        "LEVELS": 15,
     }
     ARTIFACTS_NORD_ARM = {
-        "HIGH_MIN": [2, 4],
-        "HIGH_MAX": [16, 19],
-        "ALPHA": [80, 80],
-        "BETA": [100, 110],
-        "GRADIENT_RANGE": [110, 255],
-        "TRANSPARENT_RANGE": [200, 255],
-        "LEVELS": 20
+        "HIGH_MIN": [3.5, 5],
+        "HIGH_MAX": [10, 12],
+        "ALPHA": [80, 75],
+        "BETA": [105, 100],
+        "GRADIENT_RANGE": [135, 255],
+        "TRANSPARENT_RANGE": [255, 255],
+        "LEVELS": 15
     }
     ARTIFACTS_NORD_EAST_ARM = {
-        "HIGH_MIN": [2, 3],
-        "HIGH_MAX": [5, 9],
-        "ALPHA": [150, 155],
-        "BETA": [170, 180],
-        "GRADIENT_RANGE": [120, 255],
-        "TRANSPARENT_RANGE": [200, 255],
-        "LEVELS": 10
+        "HIGH_MIN": [3.4, 5],
+        "HIGH_MAX": [4, 5],
+        "ALPHA": [155, 150],
+        "BETA": [180, 170],
+        "GRADIENT_RANGE": [135, 255],
+        "TRANSPARENT_RANGE": [255, 255],
+        "LEVELS": 15
     }
     ARTIFACTS_SOUTH_EAST_ARM = {
-        "HIGH_MIN": [3, 5],
-        "HIGH_MAX": [15, 19],
-        "ALPHA": [220, 225],
-        "BETA": [240, 250],
-        "GRADIENT_RANGE": [120, 255],
-        "TRANSPARENT_RANGE": [200, 255],
-        "LEVELS": 20
+        "HIGH_MIN": [3.5, 5],
+        "HIGH_MAX": [10, 12],
+        "ALPHA": [225, 220],
+        "BETA": [250, 245],
+        "GRADIENT_RANGE": [135, 255],
+        "TRANSPARENT_RANGE": [255, 255],
+        "LEVELS": 15
     }
     ARTIFACTS_SOUTH_WEST_ARM = {
-        "HIGH_MIN": [3, 5],
-        "HIGH_MAX": [8, 10],
-        "ALPHA": [290, 295],
-        "BETA": [315, 325],
-        "GRADIENT_RANGE": [110, 255],
-        "TRANSPARENT_RANGE": [200, 255],
-        "LEVELS": 10
+        "HIGH_MIN": [3.5, 5],
+        "HIGH_MAX": [5, 8],
+        "ALPHA": [295, 290],
+        "BETA": [325, 320],
+        "GRADIENT_RANGE": [135, 255],
+        "TRANSPARENT_RANGE": [255, 255],
+        "LEVELS": 15
     }
     ARTIFACTS_NORD_WEST_ARM = {
-        "HIGH_MIN": [3, 5],
-        "HIGH_MAX": [15, 19],
-        "ALPHA": [360, 365],
-        "BETA": [390, 400],
-        "GRADIENT_RANGE": [120, 255],
-        "TRANSPARENT_RANGE": [200, 255],
-        "LEVELS": 10
+        "HIGH_MIN": [3.5, 5],
+        "HIGH_MAX": [10, 12],
+        "ALPHA": [365, 360],
+        "BETA": [395, 390],
+        "GRADIENT_RANGE": [135, 255],
+        "TRANSPARENT_RANGE": [255, 255],
+        "LEVELS": 15
+    }
+    ARTIFACTS_STRIPES = {
+        "INTENESITY": 11,
+        "HIGH_MAX": [92, 89],
+        "HIGH_MIN": [25, 20],
+        "DEGREE_FIRST": [308, 292],
+        "DEGREE_SECOND": [268, 252],
+        "D_DEGREE": 0.2,
+        "J": 10,
+        "I": 8,
+
     }
