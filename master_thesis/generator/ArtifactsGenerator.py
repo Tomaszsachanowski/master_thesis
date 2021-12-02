@@ -17,7 +17,7 @@ STRIPES = Config.ARTIFACTS_STRIPES
 
 class ArtifactsGenerator:
     def __init__(self, data_img):
-        self.image = Image.fromarray(data_img[:, :]).convert('RGBA')
+        self.image = Image.fromarray(data_img[:, :]).convert('LA')
 
     @staticmethod
     def randomizer():
@@ -45,8 +45,6 @@ class ArtifactsGenerator:
             elipse_y_0 = pos_y - (radious_max - radious_step*i)
             elipse_y_1 = pos_y + (radious_max - radious_step*i)
             color = (int(gradient_min + gradient_step*i),
-                     int(gradient_min + gradient_step*i),
-                     int(gradient_min + gradient_step*i),
                      int(transparent_min + transparent_step*i))
 
             image_draw_elipse = ImageDraw.Draw(self.image)
@@ -80,8 +78,6 @@ class ArtifactsGenerator:
             point_2 = pos_x + high * sin(beta), pos_y - high * cos(beta)
 
             color = (int(gradient_min + gradient_step*i),
-                     int(gradient_min + gradient_step*i),
-                     int(gradient_min + gradient_step*i),
                      int(transparent_min + transparent_step*i))
 
             image_draw_triangle.polygon(point_0 + point_1 + point_2,
@@ -217,16 +213,16 @@ class ArtifactsGenerator:
 
     def increase_pixel_value(self, x, y):
         pixels = self.image.load()
-        R, G, B, T = pixels[x, y]
-        R = R + STRIPES["INTENESITY"]
-        if R > 255:
-            R = 255
-        pixels[x, y] = tuple([R, R, R, 255])
+        B, T = pixels[x, y]
+        B = B + STRIPES["INTENESITY"]
+        if B > 255:
+            B = 255
+        pixels[x, y] = tuple([B, 255])
 
     def decrease_pixel_value(self, x, y):
         pixels = self.image.load()
-        R, G, B, T = pixels[x, y]
-        R = R - STRIPES["INTENESITY"]
-        if R == 0:
-            R = 0
-        pixels[x, y] = tuple([R, R, R, 255])
+        B, T = pixels[x, y]
+        B = B - STRIPES["INTENESITY"]
+        if B == 0:
+            B = 0
+        pixels[x, y] = tuple([B, 255])
