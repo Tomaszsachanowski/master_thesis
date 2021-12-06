@@ -33,7 +33,7 @@ class Config(metaclass=Singleton):
         "CIRCLE_POS_X_RANGE": [125.0, 135.0],
         "CIRCLE_POS_Y_RANGE": [137.0, 145.0],
         "TRANSPARENCY": 255,
-        "GRADIENT_RANGE": [135, 255],
+        "GRADIENT_RANGE": [115, 255],
         "LEVELS": 15,
     }
     ARTIFACTS_NORD_ARM = {
@@ -41,7 +41,7 @@ class Config(metaclass=Singleton):
         "HIGH_MAX": [10, 12],
         "ALPHA": [80, 75],
         "BETA": [105, 100],
-        "GRADIENT_RANGE": [135, 255],
+        "GRADIENT_RANGE": [115, 255],
         "TRANSPARENCY": 255,
         "LEVELS": 15
     }
@@ -50,7 +50,7 @@ class Config(metaclass=Singleton):
         "HIGH_MAX": [4, 5],
         "ALPHA": [155, 150],
         "BETA": [180, 170],
-        "GRADIENT_RANGE": [135, 255],
+        "GRADIENT_RANGE": [115, 255],
         "TRANSPARENCY": 255,
         "LEVELS": 15
     }
@@ -59,7 +59,7 @@ class Config(metaclass=Singleton):
         "HIGH_MAX": [10, 12],
         "ALPHA": [225, 220],
         "BETA": [250, 245],
-        "GRADIENT_RANGE": [135, 255],
+        "GRADIENT_RANGE": [115, 255],
         "TRANSPARENCY": 255,
         "LEVELS": 15
     }
@@ -68,7 +68,7 @@ class Config(metaclass=Singleton):
         "HIGH_MAX": [5, 8],
         "ALPHA": [295, 290],
         "BETA": [325, 320],
-        "GRADIENT_RANGE": [135, 255],
+        "GRADIENT_RANGE": [115, 255],
         "TRANSPARENCY": 255,
         "LEVELS": 15
     }
@@ -77,7 +77,7 @@ class Config(metaclass=Singleton):
         "HIGH_MAX": [10, 12],
         "ALPHA": [365, 360],
         "BETA": [395, 390],
-        "GRADIENT_RANGE": [135, 255],
+        "GRADIENT_RANGE": [115, 255],
         "TRANSPARENCY": 255,
         "LEVELS": 15
     }
