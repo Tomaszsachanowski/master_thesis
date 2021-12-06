@@ -86,12 +86,13 @@ class ArtifactsGenerator:
 
     def generate_star_arms(self, pos_x, pos_y):
         randomizer = ArtifactsGenerator.randomizer()
+        rotation = randomizer.uniform(0, 6.28)
 
         # NORD STAR ARM
         high_range = [randomizer.uniform(*NORD_ARM["HIGH_MIN"]),
                       randomizer.uniform(*NORD_ARM["HIGH_MAX"])]
-        alpha = radians(randomizer.uniform(*NORD_ARM["ALPHA"]))
-        beta = radians(randomizer.uniform(*NORD_ARM["BETA"]))
+        alpha = radians(randomizer.uniform(*NORD_ARM["ALPHA"])) + rotation
+        beta = radians(randomizer.uniform(*NORD_ARM["BETA"])) + rotation
         gradient_range = NORD_ARM["GRADIENT_RANGE"]
         transparency = NORD_ARM["TRANSPARENCY"]
         levels = NORD_ARM["LEVELS"]
@@ -101,8 +102,8 @@ class ArtifactsGenerator:
         # NORD EAST STAR
         high_range = [randomizer.uniform(*NORD_EAST_ARM["HIGH_MIN"]),
                       randomizer.uniform(*NORD_EAST_ARM["HIGH_MAX"])]
-        alpha = radians(randomizer.uniform(*NORD_EAST_ARM["ALPHA"]))
-        beta = radians(randomizer.uniform(*NORD_EAST_ARM["BETA"]))
+        alpha = radians(randomizer.uniform(*NORD_EAST_ARM["ALPHA"])) + rotation
+        beta = radians(randomizer.uniform(*NORD_EAST_ARM["BETA"])) + rotation
         gradient_range = NORD_EAST_ARM["GRADIENT_RANGE"]
         transparency = NORD_EAST_ARM["TRANSPARENCY"]
         levels = NORD_EAST_ARM["LEVELS"]
@@ -112,8 +113,8 @@ class ArtifactsGenerator:
         # SOUT EAST STAR
         high_range = [randomizer.uniform(*SOUTH_EAST_ARM["HIGH_MIN"]),
                       randomizer.uniform(*SOUTH_EAST_ARM["HIGH_MAX"])]
-        alpha = radians(randomizer.uniform(*SOUTH_EAST_ARM["ALPHA"]))
-        beta = radians(randomizer.uniform(*SOUTH_EAST_ARM["BETA"]))
+        alpha = radians(randomizer.uniform(*SOUTH_EAST_ARM["ALPHA"])) + rotation
+        beta = radians(randomizer.uniform(*SOUTH_EAST_ARM["BETA"])) + rotation
         gradient_range = SOUTH_EAST_ARM["GRADIENT_RANGE"]
         transparency = SOUTH_EAST_ARM["TRANSPARENCY"]
         levels = SOUTH_EAST_ARM["LEVELS"]
@@ -123,8 +124,8 @@ class ArtifactsGenerator:
         # SOUT WEST STAR
         high_range = [randomizer.uniform(*SOUTH_WEST_ARM["HIGH_MIN"]),
                       randomizer.uniform(*SOUTH_WEST_ARM["HIGH_MAX"])]
-        alpha = radians(randomizer.uniform(*SOUTH_WEST_ARM["ALPHA"]))
-        beta = radians(randomizer.uniform(*SOUTH_WEST_ARM["BETA"]))
+        alpha = radians(randomizer.uniform(*SOUTH_WEST_ARM["ALPHA"])) + rotation
+        beta = radians(randomizer.uniform(*SOUTH_WEST_ARM["BETA"])) + rotation
         gradient_range = SOUTH_WEST_ARM["GRADIENT_RANGE"]
         transparency = SOUTH_WEST_ARM["TRANSPARENCY"]
         levels = SOUTH_WEST_ARM["LEVELS"]
@@ -134,8 +135,8 @@ class ArtifactsGenerator:
         # NORD WEST STAR
         high_range = [randomizer.uniform(*NORD_WEST_ARM["HIGH_MIN"]),
                       randomizer.uniform(*NORD_WEST_ARM["HIGH_MAX"])]
-        alpha = radians(randomizer.uniform(*NORD_WEST_ARM["ALPHA"]))
-        beta = radians(randomizer.uniform(*NORD_WEST_ARM["BETA"]))
+        alpha = radians(randomizer.uniform(*NORD_WEST_ARM["ALPHA"])) + rotation
+        beta = radians(randomizer.uniform(*NORD_WEST_ARM["BETA"])) + rotation
         gradient_range = NORD_WEST_ARM["GRADIENT_RANGE"]
         transparency = NORD_WEST_ARM["TRANSPARENCY"]
         levels = NORD_WEST_ARM["LEVELS"]
