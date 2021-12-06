@@ -32,7 +32,7 @@ class Config(metaclass=Singleton):
         "RADIUS_MAX": (4.5, 5.1),
         "CIRCLE_POS_X_RANGE": [125.0, 135.0],
         "CIRCLE_POS_Y_RANGE": [137.0, 145.0],
-        "TRANSPARENT_RANGE": [255, 255],
+        "TRANSPARENCY": 255,
         "GRADIENT_RANGE": [135, 255],
         "LEVELS": 15,
     }
@@ -42,7 +42,7 @@ class Config(metaclass=Singleton):
         "ALPHA": [80, 75],
         "BETA": [105, 100],
         "GRADIENT_RANGE": [135, 255],
-        "TRANSPARENT_RANGE": [255, 255],
+        "TRANSPARENCY": 255,
         "LEVELS": 15
     }
     ARTIFACTS_NORD_EAST_ARM = {
@@ -51,7 +51,7 @@ class Config(metaclass=Singleton):
         "ALPHA": [155, 150],
         "BETA": [180, 170],
         "GRADIENT_RANGE": [135, 255],
-        "TRANSPARENT_RANGE": [255, 255],
+        "TRANSPARENCY": 255,
         "LEVELS": 15
     }
     ARTIFACTS_SOUTH_EAST_ARM = {
@@ -60,7 +60,7 @@ class Config(metaclass=Singleton):
         "ALPHA": [225, 220],
         "BETA": [250, 245],
         "GRADIENT_RANGE": [135, 255],
-        "TRANSPARENT_RANGE": [255, 255],
+        "TRANSPARENCY": 255,
         "LEVELS": 15
     }
     ARTIFACTS_SOUTH_WEST_ARM = {
@@ -69,7 +69,7 @@ class Config(metaclass=Singleton):
         "ALPHA": [295, 290],
         "BETA": [325, 320],
         "GRADIENT_RANGE": [135, 255],
-        "TRANSPARENT_RANGE": [255, 255],
+        "TRANSPARENCY": 255,
         "LEVELS": 15
     }
     ARTIFACTS_NORD_WEST_ARM = {
@@ -78,7 +78,7 @@ class Config(metaclass=Singleton):
         "ALPHA": [365, 360],
         "BETA": [395, 390],
         "GRADIENT_RANGE": [135, 255],
-        "TRANSPARENT_RANGE": [255, 255],
+        "TRANSPARENCY": 255,
         "LEVELS": 15
     }
     ARTIFACTS_STRIPES = {
