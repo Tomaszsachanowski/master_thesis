@@ -1,0 +1,51 @@
+Obrót gwiazdy
+zmiana gradientu bardziej ciemniejsze
+Klasyfikacja
+napierw na swoje dane potem trenujemy i tesstuejmy potme dodajemy kolegow dane i sprawdamy 
+na ile rozwiaznaie jest generyczne 
+rozne techniki
+cytowanie wynikow kolegow
+
+uczenie glebokie rozne sieci neuronowe 
+    sieci neuronowe z wartwami spolotwymi
+    siec RESTNET
+
+filtry splotowe
+klasyfikatory klasyczne SVN BAYESSy jak przygotwac dane wejsciowe do algorytmu wyodrebnienie cech z obrazu zrownolegleniu
+    pociac obraz na mniejsze elementy
+
+Dostajemy link do narzedzi i zobaczyc co nam sie podoba
+
+Mamy łapac dziwne zmiany, potem decyzje podejmuje lekarz
+Dwa etapy czy ma zmiany  potem drugi poziom czy artefakt czy zmiana
+
+Pisanie kodu aby potem inni mieli dostep i mogli rozwijać
+
+
+17.12.2021
+
+sieci rekurencyjne:
+	sa bloki
+	moga byc bradzo glebokie
+	
+sieci splotowe:
+	dwie warstwy geste i tyle
+
+siec gesta - ciezkie rozwiazanie dla gpu mało finezyje
+sieci splotowe konwulecyjne
+sieci rekurencyjne RESTNET
+sieci LSTM
+
+Jak nalezy dane przygotwac
+obrazy nie sa male
+pociac na prostokaty kwadraty zachozace na siebie i klasyfikowac te male kawalki
+trzeba schodzic z wymiarem danych
+
+kroku w splotowych wiekszy niz jeden
+
+sieci nuronowe obliczenia na karcie GPU
+albo COLAB
+ 
+
+splotowe dla mnie
+

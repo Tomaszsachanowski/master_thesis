@@ -33,7 +33,7 @@ def main():
             sg.FileBrowse(file_types=FILE_TYPES, key="-BROWSE_1-"),
             sg.Button("Load Image", key="-Button_1-")
         ],
-        [sg.Frame("", [[sg.Image(key="-IMAGE_1-")]], size=(400, 400), key="-FRAME_1-")]
+        [sg.Frame("", [[sg.Image(key="-IMAGE_1-")]], key="-FRAME_1-")]
     ]
     col1 = sg.Column(col1_layout, element_justification="center")
 
@@ -44,7 +44,7 @@ def main():
             sg.FileBrowse(file_types=FILE_TYPES, key="-BROWSE_2-"),
             sg.Button("Load Image",  key="-Button_2-")
         ],
-        [sg.Frame("", [[sg.Image(key="-IMAGE_2-")]], size=(400, 400), key="-FRAME_2-")]
+        [sg.Frame("", [[sg.Image(key="-IMAGE_2-")]], key="-FRAME_2-")]
     ]
     col2 = sg.Column(col2_layout, element_justification="center")
 
