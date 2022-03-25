@@ -6,13 +6,13 @@ from master_thesis.generator.ArtifactsGenerator import ArtifactsGenerator
 
 
 mri_images_data = MriImage.load()
-data = mri_images_data[100]
+# Save clear data
+MriImage.save(mri_images_data)
 
-for j in range(60, 110):
-    for i in range(5):
-        # plain = random.randint(98, 105)
-        data = mri_images_data[j]
+# Save generated data
+for j, data in enumerate(mri_images_data):
+    for i in range(1):
         ag = ArtifactsGenerator(data)
         gen_image = ag.generate()
-        file_name = "images/generated/" + "sub-001-image-" + str(j) + "-" + str(i) + ".png"
+        file_name = "images/generated/" + "sub-001-image-" + str(j) + "-" + "0" + ".png"
         gen_image.save(file_name)
