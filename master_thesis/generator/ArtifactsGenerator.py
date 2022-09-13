@@ -180,15 +180,15 @@ class ArtifactsGenerator:
         levels = ARTIFACTS_ELIPSE["LEVELS"]
 
         degree = randomizer.uniform(*STRIPES["DEGREE_FIRST"])
-        self.__draw_stripes(pos_x_1, pos_y_1, degree)
+        # self.__draw_stripes(pos_x_1, pos_y_1, degree)
         self.__draw_gradient_elipse(
             pos_x_1, pos_y_1, radious_range, gradient_range,
             transparency, levels)
         self.__draw_star_arms(pos_x_1, pos_y_1)
 
         # SECOND ELIPSE
-        pos_x_2 = pos_x_1 + randomizer.uniform(-2.0, 2.0)
-        pos_y_2 = self.image.size[1] - pos_y_1 + randomizer.uniform(-2.0, 2.0)
+        pos_x_2 = pos_x_1 + randomizer.uniform(-8.0, 8.0)
+        pos_y_2 = self.image.size[1] - pos_y_1 + randomizer.uniform(-6.0, 6.0)
         radious_range = [randomizer.uniform(*ARTIFACTS_ELIPSE["RADIUS_MIN"]),
                          randomizer.uniform(*ARTIFACTS_ELIPSE["RADIUS_MAX"])]
         gradient_range = ARTIFACTS_ELIPSE["GRADIENT_RANGE"]
@@ -196,7 +196,7 @@ class ArtifactsGenerator:
         levels = ARTIFACTS_ELIPSE["LEVELS"]
         degree = randomizer.uniform(*STRIPES["DEGREE_SECOND"])
 
-        self.__draw_stripes(pos_x_2, pos_y_2, degree)
+        # self.__draw_stripes(pos_x_2, pos_y_2, degree)
         self.__draw_gradient_elipse(
             pos_x_2, pos_y_2, radious_range, gradient_range,
             transparency, levels)

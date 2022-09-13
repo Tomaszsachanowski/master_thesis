@@ -7,12 +7,14 @@ from master_thesis.generator.ArtifactsGenerator import ArtifactsGenerator
 
 mri_images_data = MriImage.load()
 # Save clear data
-MriImage.save(mri_images_data)
+# MriImage.save(mri_images_data)
 
 # Save generated data
 for j, data in enumerate(mri_images_data):
-    for i in range(1):
+    if j%4==1:
+    #     print(j)
+    # for i in range(1):
         ag = ArtifactsGenerator(data)
         gen_image = ag.generate()
-        file_name = "images/generated/" + "sub-001-image-" + str(j) + "-" + "0" + ".png"
+        file_name = "images/generated/" + "sub-001-image-" + str(j) + "-" + "3" + ".png"
         gen_image.save(file_name)
