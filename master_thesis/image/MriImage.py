@@ -1,12 +1,14 @@
+import os
+from typing import List
+import matplotlib.pyplot as plt
 import numpy as np
 
 import nibabel as nib
-import matplotlib.pyplot as plt
 
 from config import Config
 
-PATHS_MRI_IMAGE = Config.MRI_IMAGES["PATHS"]
-FORMAT = Config.MRI_IMAGES["FORMAT"]
+MRI_IMAGE_PATH = Config.MRI_IMAGES["PATHS"][0]
+EXTENTION = Config.MRI_IMAGES["EXTENTION"]
 PREFIX = Config.MRI_IMAGES["PREFIX"]
 ORGINAL_DIR = Config.MRI_IMAGES["ORGINAL_DIR"]
 
@@ -14,40 +16,59 @@ ORGINAL_DIR = Config.MRI_IMAGES["ORGINAL_DIR"]
 class MriImage:
 
     @staticmethod
-    def load(paths=PATHS_MRI_IMAGE):
+    def load(mri_path: str = MRI_IMAGE_PATH) -> np.ndarray:
         """
-        Method load all mri images from nifti files.
+        Load a MRI image from the given path.
+        Returns a np.ndarray data.
 
         Args:
-            paths (list): Paths to the nifti files. Defaults to PATHS_MRI_IMAGE.
+            mri_path (str, optional): Path to the MRI image.
+                Defaults to MRI_MSC_Dataset/sub-001/ses-1/anat/image-001.nii.gz.
 
         Returns:
-            list: List of nupy narray unit8 two dimention. 
+            np.ndarray: MRI image data.
         """        
-        all_mri_images = []
-        for path in paths:
-            nifti1_image = nib.load(path)
-            number_images = nifti1_image.shape[2] 
-            nifiti_data =  nifti1_image.get_fdata()
-            for i in range(number_images):
-                image_float64 =  nifiti_data[:,:,i]
-                image_uint8 = MriImage._convert(image_float64)
-                all_mri_images.append(image_uint8)
-        return all_mri_images
+        
+        mmri_image = nib.load(mri_path)
+        mri_data = mmri_image.get_fdata()
+        return mri_data
 
     @staticmethod
-    def _convert(img_float64, type_min=0, type_max=255, target_type=np.uint8):
-        """Convert narray from np.float64 to the np.unit8
+    def slice(mri_data: np.ndarray, axis: int = 2) -> List[np.ndarray]:
+        """
+        Slice the MRI data into images in a given plane.
 
         Args:
-            img_float64 (np.narray): MRI image represented as numpy array
+            mri_data (np.ndarray): MRI image data.
+            axis (int, optional): The axis to be rolled.
+                The positions of the other axes do not change
+                relative to one another. Defaults to 2.
+
+        Returns:
+            List[np.array]: List of mri image slices.
+        """   
+        
+        mri_image_slices = []
+        for image_data in np.rollaxis(mri_data, 2):
+                image_uint8 = MriImage._convert(image_data)
+                mri_image_slices.append(image_uint8)
+        return mri_image_slices
+
+    @staticmethod
+    def _convert(img_float64: np.ndarray, type_min: int = 0,
+                 type_max: int = 255, target_type: np.dtype = np.uint8) -> np.ndarray:
+        """
+        Convert narray from np.float64 to the np.unit8.
+
+        Args:
+            img_float64 (np.ndarray): MRI image slice represented as numpy array.
             type_min (int, optional): Min normalization value. Defaults to 0.
             type_max (int, optional): Max normalization value. Defaults to 255.
             target_type (np.uint8, optional): Dtype of narray. Defaults to np.uint8.
 
         Returns:
-            np.narray: New narray with Dtype uint8
-        """        
+            np.narray: New  MRI image slice represented as numpy array with Dtype uint8.
+        """
         imin = img_float64.min()
         imax = img_float64.max()
 
@@ -57,16 +78,28 @@ class MriImage:
         return new_img_uint8
 
     @staticmethod
-    def save(mri_images, images_dir=ORGINAL_DIR,
-             prefix= PREFIX, format=FORMAT):
-        """[summary]
-
+    def save(mri_image_slices: List[np.ndarray], output_dir: str = ORGINAL_DIR,
+             prefix: str = PREFIX, extention: str = EXTENTION) -> None:
+        """
         Args:
-            mri_images (list): List of numpy narray unit8 two dimention. 
-            images_dir (str, "images/orginal"): Path to the directory where the images will be saved. Defaults to ORGINAL_DIR.
-            prefix (str, /sub-001/sub-001-image-): Prefix image filename. Defaults to PREFIX.
-            format (str, .png): Image format. Defaults to FORMAT.
-        """             
-        for indx, data in enumerate(mri_images):
-            file_path = images_dir + prefix + str(indx) + format
-            plt.imsave(file_path, data, cmap="gray", origin="lower")
+            mri_image_slices ( List[np.ndarray]): List of mri image slices 
+                represented as numpy array with Dtype uint8. 
+            output_dir (str, optional): Path to the directory where the
+                images will be saved. Defaults to 'images/orginal/sub-001'.
+            prefix (str, orginal): Prefix for  filename.
+                Defaults to "sub-001-image-".
+            extention (str, .png): Image extention. Defaults to '.png'.
+        """
+        for indx, data in enumerate(mri_image_slices):
+            path = os.path.join(
+                output_dir, f"{prefix}{str(indx)}{extention}" )
+            plt.imsave(path, data, cmap="gray", origin="lower")
+
+
+if __name__ == "__main__":
+    a = MriImage.load()
+    print(a.shape)
+    b = MriImage.slice(a)
+    for i in b:
+        print(i.shape)
+    MriImage.save(b)
