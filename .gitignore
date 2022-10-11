@@ -1,3 +1,4 @@
 /MRI_MSC_Dataset
 __pycache__/*
 images/*
+.vscode/*
