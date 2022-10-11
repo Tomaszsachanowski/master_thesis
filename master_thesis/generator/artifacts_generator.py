@@ -1,49 +1,41 @@
 
-from random import Random
-from math import radians, sin, cos, ceil, floor
+from math import radians, sin, cos
 from numpy import round
+from PIL import Image, ImageDraw
+
+from .randomizer import Randomizer
 from config import Config
-from PIL import Image, ImageDraw, ImageFilter
 
-
-ARTIFACTS_ELIPSE = Config.ARTIFACTS_ELIPSE
+ARTIFACTS = Config.ARTIFACTS
+ARTIFACTS_ELIPSE_BOTTOM = Config.ARTIFACTS_ELIPSE_BOTTOM
+ARTIFACTS_ELIPSE_TOP = Config.ARTIFACTS_ELIPSE_TOP
 NORD_ARM = Config.ARTIFACTS_NORD_ARM
 NORD_EAST_ARM = Config.ARTIFACTS_NORD_EAST_ARM
 SOUTH_EAST_ARM = Config.ARTIFACTS_SOUTH_EAST_ARM
 SOUTH_WEST_ARM = Config.ARTIFACTS_SOUTH_WEST_ARM
 NORD_WEST_ARM = Config.ARTIFACTS_NORD_WEST_ARM
-STRIPES = Config.ARTIFACTS_STRIPES
+ARTIFACTS_STRIPES_BOTTOM = Config.ARTIFACTS_STRIPES_BOTTOM
+ARTIFACTS_STRIPES_TOP = Config.ARTIFACTS_STRIPES_TOP
 
 
 class ArtifactsGenerator:
-    def __init__(self, data_img):
+    def __init__(self, data_img, randomizer: Randomizer = Randomizer(ARTIFACTS['SEED'])):
         self.image = Image.fromarray(data_img[:, :]).convert('LA')
+        self.__randomizer = randomizer
 
-    @staticmethod
-    def randomizer():
-        """ Method return randomizer.
-
-        Returns:
-            [random.Random]: randomizer
+    def __draw_gradient_elipse(self, pos_x, pos_y, radious_range,
+                               gradient_range, transparency, levels) -> None:
         """
-        randomizer= Random()
-        return randomizer
-
-    def __blur(self, pos_x_0, pos_y_0, pos_x_1, pos_y_1):
-        """Blur part of the image.
+        Draw the gradient elipse.
 
         Args:
-            pos_x_0 (int): X position top left.
-            pos_y_0 (int): Y position top left.
-            pos_x_1 (int): X position bottom right.
-            pos_y_1 (int): Y position bottom right.
+            pos_x (_type_):  X position of the star.
+            pos_y (_type_):  Y position of the star.
+            radious_range (_type_): Radious range.
+            gradient_range (_type_): Gradient range.
+            transparency (_type_): Transparency.
+            levels (_type_): Levels.
         """
-        region_blured = self.image.crop((pos_x_0, pos_y_0, pos_x_1, pos_y_1))
-        region_blured = region_blured.filter(ImageFilter.GaussianBlur(1))
-        self.image.paste(region_blured, (pos_x_0, pos_y_0, pos_x_1, pos_y_1))
-
-    def __draw_gradient_elipse(self, pos_x, pos_y, radious_range, gradient_range,
-                               transparency, levels):
         gradient_min, gradient_max = gradient_range
         radious_min, radious_max = radious_range
 
@@ -55,23 +47,28 @@ class ArtifactsGenerator:
             elipse_x_1 = pos_x + (radious_max - radious_step*i)
             elipse_y_0 = pos_y - (radious_max - radious_step*i)
             elipse_y_1 = pos_y + (radious_max - radious_step*i)
-            color = (int(gradient_min + gradient_step*i),
-                     transparency)
+            color = (int(gradient_min + gradient_step*i), transparency)
 
             image_draw_elipse = ImageDraw.Draw(self.image)
             image_draw_elipse.ellipse(
                 (elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1),
                 fill=color, outline=color)
 
-        # # Rectangle for blur
-        # elipse_x_0 = floor(pos_x - radious_range[1])
-        # elipse_x_1 = ceil(pos_x + radious_range[1])
-        # elipse_y_0 =  floor(pos_y - radious_range[1])
-        # elipse_y_1 =  ceil(pos_y + radious_range[1])
-        # self.blur(elipse_x_0, elipse_y_0, elipse_x_1, elipse_y_1)
-
     def __draw_gradient_triangle(self, pos_x, pos_y, high_range, alpha, beta,
-                                   gradient_range, transparency, levels):
+                                 gradient_range, transparency, levels) -> None:
+        """
+        Draw the gradient arms of the star (trinagle).
+
+        Args:
+            pos_x (_type_):  X position of the star.
+            pos_y (_type_):  Y position of the star.
+            high_range (_type_): High range.
+            alpha (_type_): alpha angle of the trinagle.
+            beta (_type_): beta angle of the trinagle.
+            gradient_range (_type_): Gradient range.
+            transparency (_type_): Transparency.
+            levels (_type_): Levels.
+        """
         gradient_min, gradient_max = gradient_range
         high_min, high_max = high_range
 
@@ -92,135 +89,53 @@ class ArtifactsGenerator:
             image_draw_triangle.polygon(point_0 + point_1 + point_2,
                                         fill=color)
 
-        # # Rectangle for blur
-        # all_pos_x = [pos_x, pos_x + high_max * sin(alpha), pos_x + high_max * sin(beta)]
-        # all_pos_y = [pos_y, pos_y - high_max * cos(alpha), pos_y - high_max * cos(beta)]
-        # self.blur(floor(min(all_pos_x)), floor(min(all_pos_y)), ceil(max(all_pos_x)), ceil(max(all_pos_y)))
-
-    def __draw_star_arms(self, pos_x, pos_y):
-        """Draw the five arms of the star.
+    def __draw_star_arms(self, pos_x, pos_y) -> None:
+        """
+        Draw the five arms of the star.
 
         Args:
             pos_x (int): X position of the star.
             pos_y (int): Y position of the star.
         """
-        randomizer = ArtifactsGenerator.randomizer()
-        rotation = randomizer.uniform(0, 6.28)
-
+        rotation = self.__randomizer.randomize_rotation(ARTIFACTS)
         # NORD STAR ARM
-        high_range = [randomizer.uniform(*NORD_ARM["HIGH_MIN"]),
-                      randomizer.uniform(*NORD_ARM["HIGH_MAX"])]
-        alpha = radians(randomizer.uniform(*NORD_ARM["ALPHA"])) + rotation
-        beta = radians(randomizer.uniform(*NORD_ARM["BETA"])) + rotation
-        gradient_range = NORD_ARM["GRADIENT_RANGE"]
-        transparency = NORD_ARM["TRANSPARENCY"]
-        levels = NORD_ARM["LEVELS"]
-        self.__draw_gradient_triangle(pos_x, pos_y, high_range, alpha, beta,
-                                      gradient_range, transparency, levels)
-
+        nord_star_arm =  self.__randomizer.randomize_star_arm(
+            rotation, NORD_ARM)
+        self.__draw_gradient_triangle(pos_x, pos_y, **nord_star_arm)
         # NORD EAST STAR
-        high_range = [randomizer.uniform(*NORD_EAST_ARM["HIGH_MIN"]),
-                      randomizer.uniform(*NORD_EAST_ARM["HIGH_MAX"])]
-        alpha = radians(randomizer.uniform(*NORD_EAST_ARM["ALPHA"])) + rotation
-        beta = radians(randomizer.uniform(*NORD_EAST_ARM["BETA"])) + rotation
-        gradient_range = NORD_EAST_ARM["GRADIENT_RANGE"]
-        transparency = NORD_EAST_ARM["TRANSPARENCY"]
-        levels = NORD_EAST_ARM["LEVELS"]
-        self.__draw_gradient_triangle(pos_x, pos_y, high_range, alpha, beta,
-                                      gradient_range, transparency, levels)
-
+        nord_east_star_arm =  self.__randomizer.randomize_star_arm(
+            rotation, NORD_EAST_ARM)
+        self.__draw_gradient_triangle(pos_x, pos_y, **nord_east_star_arm)
         # SOUT EAST STAR
-        high_range = [randomizer.uniform(*SOUTH_EAST_ARM["HIGH_MIN"]),
-                      randomizer.uniform(*SOUTH_EAST_ARM["HIGH_MAX"])]
-        alpha = radians(randomizer.uniform(*SOUTH_EAST_ARM["ALPHA"])) + rotation
-        beta = radians(randomizer.uniform(*SOUTH_EAST_ARM["BETA"])) + rotation
-        gradient_range = SOUTH_EAST_ARM["GRADIENT_RANGE"]
-        transparency = SOUTH_EAST_ARM["TRANSPARENCY"]
-        levels = SOUTH_EAST_ARM["LEVELS"]
-        self.__draw_gradient_triangle(pos_x, pos_y, high_range, alpha, beta,
-                                      gradient_range, transparency, levels)
-
-        # SOUT WEST STAR
-        high_range = [randomizer.uniform(*SOUTH_WEST_ARM["HIGH_MIN"]),
-                      randomizer.uniform(*SOUTH_WEST_ARM["HIGH_MAX"])]
-        alpha = radians(randomizer.uniform(*SOUTH_WEST_ARM["ALPHA"])) + rotation
-        beta = radians(randomizer.uniform(*SOUTH_WEST_ARM["BETA"])) + rotation
-        gradient_range = SOUTH_WEST_ARM["GRADIENT_RANGE"]
-        transparency = SOUTH_WEST_ARM["TRANSPARENCY"]
-        levels = SOUTH_WEST_ARM["LEVELS"]
-        self.__draw_gradient_triangle(pos_x, pos_y, high_range, alpha, beta,
-                                      gradient_range, transparency, levels)
-
+        south_east_star_arm =  self.__randomizer.randomize_star_arm(
+            rotation, SOUTH_EAST_ARM)
+        self.__draw_gradient_triangle(pos_x, pos_y, **south_east_star_arm)
+        # SOUTH WEST STAR
+        south_west_star_arm =  self.__randomizer.randomize_star_arm(
+            rotation, SOUTH_WEST_ARM)
+        self.__draw_gradient_triangle(pos_x, pos_y, **south_west_star_arm)
         # NORD WEST STAR
-        high_range = [randomizer.uniform(*NORD_WEST_ARM["HIGH_MIN"]),
-                      randomizer.uniform(*NORD_WEST_ARM["HIGH_MAX"])]
-        alpha = radians(randomizer.uniform(*NORD_WEST_ARM["ALPHA"])) + rotation
-        beta = radians(randomizer.uniform(*NORD_WEST_ARM["BETA"])) + rotation
-        gradient_range = NORD_WEST_ARM["GRADIENT_RANGE"]
-        transparency = NORD_WEST_ARM["TRANSPARENCY"]
-        levels = NORD_WEST_ARM["LEVELS"]
-        self.__draw_gradient_triangle(pos_x, pos_y, high_range, alpha, beta,
-                                      gradient_range, transparency, levels)
+        nord_west_star_arm =  self.__randomizer.randomize_star_arm(
+            rotation, NORD_WEST_ARM)
+        self.__draw_gradient_triangle(pos_x, pos_y, **nord_west_star_arm)
 
-    def generate(self):
-        """Generate artificats star.
-
-        Returns:
-            [image.Image]: created image
+    def __draw_stripes(self, pos_x, pos_y, degree, max_high,
+                       min_high, J, I, d_defree, intensity) -> None:
         """
-        randomizer = ArtifactsGenerator.randomizer()
-
-        # FIRST ELIPSE
-        pos_x_1 = randomizer.uniform(*ARTIFACTS_ELIPSE["CIRCLE_POS_X_RANGE"])
-        pos_y_1 = randomizer.uniform(*ARTIFACTS_ELIPSE["CIRCLE_POS_Y_RANGE"])
-        radious_range = [randomizer.uniform(*ARTIFACTS_ELIPSE["RADIUS_MIN"]),
-                         randomizer.uniform(*ARTIFACTS_ELIPSE["RADIUS_MAX"])]
-        gradient_range = ARTIFACTS_ELIPSE["GRADIENT_RANGE"]
-        transparency = ARTIFACTS_ELIPSE["TRANSPARENCY"]
-        levels = ARTIFACTS_ELIPSE["LEVELS"]
-
-        degree = randomizer.uniform(*STRIPES["DEGREE_FIRST"])
-        self.__draw_stripes(pos_x_1, pos_y_1, degree)
-        self.__draw_gradient_elipse(
-            pos_x_1, pos_y_1, radious_range, gradient_range,
-            transparency, levels)
-        self.__draw_star_arms(pos_x_1, pos_y_1)
-
-        # SECOND ELIPSE
-        pos_x_2 = pos_x_1 + randomizer.uniform(-2.0, 2.0)
-        pos_y_2 = self.image.size[1] - pos_y_1 + randomizer.uniform(-2.0, 2.0)
-        radious_range = [randomizer.uniform(*ARTIFACTS_ELIPSE["RADIUS_MIN"]),
-                         randomizer.uniform(*ARTIFACTS_ELIPSE["RADIUS_MAX"])]
-        gradient_range = ARTIFACTS_ELIPSE["GRADIENT_RANGE"]
-        transparency = ARTIFACTS_ELIPSE["TRANSPARENCY"]
-        levels = ARTIFACTS_ELIPSE["LEVELS"]
-        degree = randomizer.uniform(*STRIPES["DEGREE_SECOND"])
-
-        self.__draw_stripes(pos_x_2, pos_y_2, degree)
-        self.__draw_gradient_elipse(
-            pos_x_2, pos_y_2, radious_range, gradient_range,
-            transparency, levels)
-        self.__draw_star_arms(pos_x_2, pos_y_2)
-        return self.image
-
-    def __draw_stripes(self, pos_x, pos_y, degree):
-        """Draw light and dark radial stripes alternately.
+        Draw light and dark radial stripes alternately.
 
         Args:
             pos_x (int): X position of the star.
             pos_y (int): Y position of the star.
             degree (int): The angle of the start of the stripes.
         """
-        randomizer = self.randomizer()
-        max_high = randomizer.uniform(*STRIPES["HIGH_MAX"])
-        min_high = randomizer.uniform(*STRIPES["HIGH_MIN"])
         alpha = radians(degree)
         point_1 = pos_x + max_high * sin(alpha), pos_y - max_high * cos(alpha)
 
         all_xy = []
-        for j in range(STRIPES["J"]):
-            for i in range(STRIPES["I"]):
-                alpha = radians(degree-STRIPES["D_DEGREE"]*i-STRIPES["D_DEGREE"]*STRIPES["I"]*j)
+        for j in range(J):
+            for i in range(I):
+                alpha = radians(degree-d_defree*i-d_defree*I*j)
                 point_1 = pos_x + max_high * sin(alpha), pos_y - max_high * cos(alpha)
 
                 x_distance = pos_x - point_1[0]
@@ -231,49 +146,76 @@ class ArtifactsGenerator:
                 for i in range(int(round(x_distance))):
                     if (xn, yn) not in all_xy:
                         if (j % 2) == 0:
-                            self.__increase_pixel_value(xn, yn)
+                            self.__increase_pixel_value(xn, yn, intensity)
                         else:
-                            self.__decrease_pixel_value(xn, yn)
+                            self.__decrease_pixel_value(xn, yn, intensity)
                     xn = xn + 1
                     tmp = tmp + dy
                     yn = int(round(tmp))
                     if xn > pos_x - min_high:
                         break
 
-    def __increase_pixel_value(self, pos_x, pos_y):
+    def __increase_pixel_value(self, pos_x, pos_y, intensity) -> None:
         """
         Increases the pixel value.
-        Transparency remains at the level of max
+        Transparency remains at the level of max.
 
         Args:
-            pos_x (int): Pixel x position
-            pos_y (int): Pixel y position
+            pos_x (int): Pixel x position.
+            pos_y (int): Pixel y position.
+            intensity (int): Change the intensity.
+
         """
         # load image as pixels array
         pixels = self.image.load()
         # get pixel values
         B, T = pixels[pos_x, pos_y]
         # increase pixel value
-        B = B + STRIPES["INTENESITY"]
+        B = B + intensity
         if B > 255:
             B = 255
         pixels[pos_x, pos_y] = tuple([B, 255])
 
-    def __decrease_pixel_value(self, pos_x, pos_y):
+    def __decrease_pixel_value(self, pos_x, pos_y, intensity) -> None:
         """
         Decreases the pixel value.
         Transparency remains at the level of min
 
         Args:
-            pos_x (int): Pixel x position
-            pos_y (int): Pixel y position
+            pos_x (int): Pixel x position.
+            pos_y (int): Pixel y position.
+            intensity (int): Change the intensity.
         """
         # load image as pixels array
         pixels = self.image.load()
         # get pixel values
         B, T = pixels[pos_x, pos_y]
         # decrease pixel value
-        B = B - STRIPES["INTENESITY"]
+        B = B - intensity
         if B == 0:
             B = 0
         pixels[pos_x, pos_y] = tuple([B, 255])
+
+    def generate(self) -> ImageDraw:
+        """
+        Generate artificats.
+
+        Returns:
+            ImageDraw: Created image with artificats.
+        """
+
+        # BOTTOM ARTIFACTS
+        elipse_bottom = self.__randomizer.randomize_elipse(ARTIFACTS_ELIPSE_BOTTOM)
+        stripes_bottom = self.__randomizer.randomize_stripes(ARTIFACTS_STRIPES_BOTTOM)
+        self.__draw_stripes(elipse_bottom['pos_x'], elipse_bottom['pos_y'], **stripes_bottom)
+        self.__draw_gradient_elipse(**elipse_bottom)
+        self.__draw_star_arms(elipse_bottom['pos_x'], elipse_bottom['pos_y'])
+
+        # TOP ARTIFACTS
+        elipse_top = self.__randomizer.randomize_elipse(ARTIFACTS_ELIPSE_TOP)
+        stripes_top = self.__randomizer.randomize_stripes(ARTIFACTS_STRIPES_TOP)
+        self.__draw_stripes(elipse_top['pos_x'], elipse_top['pos_y'], **stripes_top)
+        self.__draw_gradient_elipse(**elipse_top)
+        self.__draw_star_arms(elipse_top['pos_x'], elipse_top['pos_y'])
+
+        return self.image
