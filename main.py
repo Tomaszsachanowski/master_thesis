@@ -2,7 +2,7 @@
 
 import random
 from master_thesis.image.MriImage import MriImage
-from master_thesis.generator.ArtifactsGenerator import ArtifactsGenerator
+from master_thesis.generator.artifacts_generator import ArtifactsGenerator
 
 
 mri_images_data = MriImage.load()
